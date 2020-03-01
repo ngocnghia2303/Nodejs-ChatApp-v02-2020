@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }), bodyParser.json());
 
 //router
 const User = require('../models/user_model.js');
+const {regisValidate} = require('../auth/authen.js');
 
 //home page
 router.get('/', function(req, res){
@@ -30,6 +31,12 @@ router.get('/sign', function (req, res) {
 
 //register user
 router.post('/sign', async function(req,res){
+
+    //Validate acc 
+    //input data for validate acc
+    const { error } = regisValidate(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
     var status = false;
     if (req.body.alone) {
         status = true;
@@ -38,6 +45,7 @@ router.post('/sign', async function(req,res){
         email: req.body.email,
         name: req.body.name,
         password: req.body.pwd,
+        confirmpass: req.body.pwdConfirm,
         location: req.body.address,
         phone: req.body.phone,
         job: req.body.work,
