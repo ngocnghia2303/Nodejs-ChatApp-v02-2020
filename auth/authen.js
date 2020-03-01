@@ -11,20 +11,23 @@ const regisValidate = function(data){
             .max(15)
             .required(),
     
-        password: Joi.string()
-            .min(6)
-            .required()
-            .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+        password: [
+            Joi.string()
+                .min(3),
+            Joi.number()
+                .min(3)
+        ],
+            // .required(),
+            // .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')), //Linda will check pattern again
     
         confirmpass: Joi.ref('password'),
     
         phone: Joi.number()
-            .min(10)
-            .max(11)
+            .min(9)
     });
     return schemaRegister.validate(data);
 };
 
-module.exports = regisValidate;
+module.exports.regisValidate = regisValidate;
 
 
