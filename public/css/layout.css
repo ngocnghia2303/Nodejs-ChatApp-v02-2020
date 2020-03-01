@@ -1,0 +1,7 @@
+.has-bg-img{
+    background-image: url("https://get.wallhere.com/photo/sunset-night-galaxy-space-sky-blue-Milky-Way-horizon-atmosphere-science-universe-astronomy-Homer-Simpson-constellation-midnight-star-darkness-2560x1440-px-computer-wallpaper-atmosphere-of-earth-outer-space-astronomical-object-phenomenon-837683.jpg");
+    position: fixed; 
+    width: 100%; 
+    height: 100%;
+    background-repeat: no-repeat;
+}
