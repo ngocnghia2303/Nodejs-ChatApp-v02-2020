@@ -30,7 +30,7 @@ const saltRounds = 10;
 
 //router
 const User = require('../models/user_model.js');
-const {regisValidate} = require('../auth/authen.js');
+const {regisValidate, loginValidate} = require('../auth/authen.js');
 
 //home page
 router.get('/', function(req, res){
@@ -106,7 +106,16 @@ router.post('/sign', async function(req,res){
     }catch(err){
         res.status(400).send(err);
     };
-
 });
+
+router.get('/login', function(req, res){
+    res.render('../views/home.ejs', { page: 'login' });
+});
+
+router.post('/login', function(req, res){
+    // Validate login
+    const { error } = loginValidate(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+})
 
 module.exports = router;

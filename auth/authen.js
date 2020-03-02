@@ -1,3 +1,5 @@
+//body-parser
+const bodyParser = require('body-parser');
 
 const Joi = require('@hapi/joi');
 const complpassword = require('../routes/index')
@@ -30,6 +32,25 @@ const regisValidate = function(data){
     return schemaRegister.validate(data);
 };
 
-module.exports.regisValidate = regisValidate;
+//validate for login chatapp
+const loginValidate = function(data){
+    const schemaLogin = Joi.object({
+        email: Joi.string()
+        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
 
+        //password:
+
+        // C1 : validation with https://www.npmjs.com/package/joi-password-complexity
+        // password: complpassword,
+        
+        //C2: 
+        // password: Joi.string()
+        //     .min(6)
+        //     .required(),
+    });
+    return schemaLogin.validate(data)
+}
+
+module.exports.regisValidate = regisValidate;
+module.exports.loginValidate = loginValidate;
 
