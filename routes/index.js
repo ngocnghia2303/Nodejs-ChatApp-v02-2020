@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 
 const router = express.Router();
-const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 
 //Engine Ejs
@@ -15,15 +14,20 @@ app.use(express.static('../public'));
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }), bodyParser.json());
 
+//bcrypt
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 //validation only pass
-const passwordComplexity = require('joi-password-complexity');
-const complpassword = {
-    min: 6,
-    max: 30,
-    upperCase: 1,
-    numeric: 1,
-    requirementCount: 2,
-};
+// const passwordComplexity = require('joi-password-complexity');
+// const complpassword = {
+//     min: 6,
+//     max: 30,
+//     upperCase: 1,
+//     numeric: 1,
+//     requirementCount: 2,
+// };
+
 //router
 const User = require('../models/user_model.js');
 const {regisValidate} = require('../auth/authen.js');
@@ -43,8 +47,26 @@ router.post('/sign', async function(req,res){
 
     //Validate acc 
     //input data for validate acc
+
     const { error } = regisValidate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
+
+
+    //check email in database
+    const emailcheck = await User.findOne({email:req.body.email});
+    if(emailcheck) return res.status(400).send("Email already exists");
+
+    //hash password
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+        if (err) return next(err);
+        // hash the password
+        bcrypt.hash(req.body.password, salt, function (err, hash) {
+            if (err) return next(err);
+
+            // set the hashed password back on our user document
+            newuser.password = hash;
+        });
+    });
 
     var status = false;
     if (req.body.alone) {
@@ -53,8 +75,8 @@ router.post('/sign', async function(req,res){
     var newuser = new User({
         email: req.body.email,
         name: req.body.name,
-        password: req.body.password,
-        repeat_password: req.body.pass_repeat,
+        password: hash,
+        repeat_password: password,
         location: req.body.address,
         phone: req.body.phone,
         job: req.body.work,
@@ -66,8 +88,8 @@ router.post('/sign', async function(req,res){
         income: req.body.income,
         alone: status
     });
-    passwordComplexity(complpassword).validate(req.body.password);
-    module.exports = complpassword;
+    // passwordComplexity(complpassword).validate(req.body.password);
+    // module.exports = complpassword;
     try{
         const User = await newuser.save(function(err, data){
             if (err) {
@@ -84,7 +106,7 @@ router.post('/sign', async function(req,res){
     }catch(err){
         res.status(400).send(err);
     };
+
 });
 
 module.exports = router;
-// app.listen(3800, function(){console.log('Server listening port compelete '+ 3000)});
