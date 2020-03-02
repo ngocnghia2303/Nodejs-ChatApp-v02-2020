@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    confirmpass:{
+    repeat_password:{
         type: String,
         required:true,
     },

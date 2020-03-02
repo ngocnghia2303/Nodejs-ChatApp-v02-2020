@@ -1,4 +1,6 @@
+
 const Joi = require('@hapi/joi');
+const complpassword = require('../routes/index')
 //Validate account will be registered with Joi
 
 const regisValidate = function(data){
@@ -10,17 +12,17 @@ const regisValidate = function(data){
             .min(4)
             .max(15)
             .required(),
+
+        // Linda will check pattern again
+        // C1 : validation with https://www.npmjs.com/package/joi-password-complexity
+        // password: complpassword,
+        
+        //C2: 
+        // password: Joi.string()
+        //     .min(6)
+        //     .required(),
     
-        password: [
-            Joi.string()
-                .min(3),
-            Joi.number()
-                .min(3)
-        ],
-            // .required(),
-            // .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')), //Linda will check pattern again
-    
-        confirmpass: Joi.ref('password'),
+        // repeat_password: Joi.ref('password'),
     
         phone: Joi.number()
             .min(9)

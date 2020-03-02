@@ -1,13 +1,24 @@
-…or create a new repository on the command line
-    echo "# Nodejs-ChatApp-v02-2020" >> README.md
-    git init
-    git add README.md
-    git commit -m "first commit"
-    git remote add origin git@github.com:ngocnghia2303/Nodejs-ChatApp-v02-2020.git
-    git push -u origin master
+GIT
 …or push an existing repository from the command line
+    git status
+    git add .
+    git commit -m "first commit"
     git remote add origin git@github.com:ngocnghia2303/Nodejs-ChatApp-v02-2020.git
     git push -u origin master
 …or import code from another repository
 You can initialize this repository with code from a Subversion, Mercurial, or TFS project.
+
+project
+frameword used
+    1. nodemon => auto start app when have change
+    2. JWT
+    3.bycript => gen salt password & hash password . After it save hash as password in database
+    4. ejs => engine my like to building template html by format .ejs
+    5. router => changed routing app.get by route.get or route.post
+    6. hapi Joi => Validation user information when register account & login chat app
+    7. Mongoose => create model & save user information in database
+    8. Express => Mien~ ban` because i dont know
+    9. body-parser => paste data enter in body template or body URL
+    10. joi-password-complexity => creates a joi object thad validates password complexity
+
 

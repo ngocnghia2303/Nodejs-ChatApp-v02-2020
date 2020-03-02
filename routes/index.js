@@ -15,6 +15,15 @@ app.use(express.static('../public'));
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }), bodyParser.json());
 
+//validation only pass
+const passwordComplexity = require('joi-password-complexity');
+const complpassword = {
+    min: 6,
+    max: 30,
+    upperCase: 1,
+    numeric: 1,
+    requirementCount: 2,
+};
 //router
 const User = require('../models/user_model.js');
 const {regisValidate} = require('../auth/authen.js');
@@ -44,8 +53,8 @@ router.post('/sign', async function(req,res){
     var newuser = new User({
         email: req.body.email,
         name: req.body.name,
-        password: req.body.pwd,
-        confirmpass: req.body.pwd,
+        password: req.body.password,
+        repeat_password: req.body.pass_repeat,
         location: req.body.address,
         phone: req.body.phone,
         job: req.body.work,
@@ -57,7 +66,8 @@ router.post('/sign', async function(req,res){
         income: req.body.income,
         alone: status
     });
-
+    passwordComplexity(complpassword).validate(req.body.password);
+    module.exports = complpassword;
     try{
         const User = await newuser.save(function(err, data){
             if (err) {
@@ -77,5 +87,4 @@ router.post('/sign', async function(req,res){
 });
 
 module.exports = router;
-
 // app.listen(3800, function(){console.log('Server listening port compelete '+ 3000)});
