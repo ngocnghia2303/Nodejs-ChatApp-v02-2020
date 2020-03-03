@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 const router = express.Router();
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 //Engine Ejs
 const ejs = require('ejs');
@@ -31,6 +31,7 @@ const saltRounds = 10;
 //router
 const User = require('../models/user_model.js');
 const {regisValidate, loginValidate} = require('../auth/authen.js');
+const checkToken = require('../auth/tokenCheck.js');
 
 //home page
 router.get('/', function(req, res){
@@ -95,7 +96,7 @@ router.post('/sign', async function(req,res){
             if (err) {
                 res.json({
                     kq: 0,
-                    ErrMess: 'Loi~ ne`=====> ' + err
+                    ErrMess: "Loi~ ne`=====> " + err
                 });
                 console.log(err);
             } else {
@@ -125,7 +126,16 @@ router.post('/login', async function(req, res){
     const passCheck = await bcrypt.compare(req.body.password, accCheck.password);
     if(!passCheck) return res.status(400).send("Invalid pass!!!");
 
-    res.render('../views/home.ejs', { page: 'chat' });
+    // res.render('../views/home.ejs', { page: 'chat' });
+    const token = jwt.sign({_id: accCheck._id}, process.env.SECRET_TOKEN, {expiresIn: 60 * 60});
+    console.log("TOKEN is: " + token);
+    //add token >> header anything
+    res.header("authenticate-token", token).send(token);
+})
+
+//Demo token
+router.get('/token', verify, function(req, res){
+    res.send("Welcome my friend!!")
 })
 
 module.exports = router;
