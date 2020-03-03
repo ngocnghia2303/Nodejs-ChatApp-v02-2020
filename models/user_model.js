@@ -11,13 +11,13 @@ const userSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        // required: true,
+        required: true,
     },
-    repeat_password:{
+    pass_repeat:{
         type: String,
         // required:true,
     },
-    location: {
+    address: {
         type: String,
     },
     phone: {

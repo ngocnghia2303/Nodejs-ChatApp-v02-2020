@@ -58,37 +58,37 @@ router.post('/sign', async function(req,res){
     if(emailcheck) return res.status(400).send("Email already exists");
 
     //hash password
-    bcrypt.genSalt(saltRounds, function (err, salt) {
+    await bcrypt.genSalt(saltRounds, function (err, salt) {
         if (err) return next(err);
         // hash the password
-        bcrypt.hash(req.body.password, salt, function (err, hash) {
+      bcrypt.hash(req.body.password, salt, function (err, hash) {
             if (err) return next(err);
 
             // set the hashed password back on our user document
-            newuser.password = hash;
+            // newuser.password = hash;
+            var status = false;
+            if (req.body.alone) {
+                status = true;
+            };
+            var newuser = new User({
+                email: req.body.email,
+                name: req.body.name,
+                password: req.body.password,
+                pass_repeat: req.body.pass_repeat,
+                address: req.body.address,
+                phone: req.body.phone,
+                job: req.body.work,
+                workplace: req.body.workplace,
+                age: req.body.age,
+                favorite: req.body.favorite,
+                yourself: req.body.yourself,
+                security: req.body.security,
+                income: req.body.income,
+                alone: status
+            });
         });
     });
 
-    var status = false;
-    if (req.body.alone) {
-        status = true;
-    };
-    var newuser = new User({
-        email: req.body.email,
-        name: req.body.name,
-        password: hash,
-        repeat_password: password,
-        location: req.body.address,
-        phone: req.body.phone,
-        job: req.body.work,
-        workplace: req.body.workplace,
-        age: req.body.age,
-        favorite: req.body.favorite,
-        yourself: req.body.yourself,
-        security: req.body.security,
-        income: req.body.income,
-        alone: status
-    });
     // passwordComplexity(complpassword).validate(req.body.password);
     // module.exports = complpassword;
     try{
@@ -134,7 +134,7 @@ router.post('/login', async function(req, res){
 })
 
 //Demo token
-router.get('/token', verify, function(req, res){
+router.get('/token', checkToken, function(req, res){
     res.send("Welcome my friend!!")
 })
 

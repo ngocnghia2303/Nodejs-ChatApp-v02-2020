@@ -12,23 +12,42 @@ const regisValidate = function(data){
         
         name: Joi.string()
             .min(4)
-            .max(15)
-            .required(),
+            .max(15),
 
         // Linda will check pattern again
         // C1 : validation with https://www.npmjs.com/package/joi-password-complexity
-        // password: complpassword,
-        
+        password: Joi.string(),
+        // repeat_pass: Joi.string(),
         //C2: 
         // password: Joi.string()
         //     .min(6)
         //     .required(),
     
-        // repeat_password: Joi.ref('password'),
-    
-        phone: Joi.number()
-            .min(9)
-    });
+        pass_repeat: Joi.ref('password'),
+
+        phone: Joi.string()
+            .min(9),
+        
+        address: Joi.string(),
+        
+        work: Joi.string(),
+
+        workplace: Joi.string(),
+
+        age: Joi.number()
+            .min(20),
+        
+        favorite: Joi.string(),
+
+        yourself: Joi.string(),
+
+        security: Joi.string(),
+
+        income: Joi.number(),
+
+        alone: Joi.string(),
+
+    }).strict(false);
     return schemaRegister.validate(data);
 };
 
