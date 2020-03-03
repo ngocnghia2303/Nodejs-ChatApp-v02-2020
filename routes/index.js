@@ -112,10 +112,20 @@ router.get('/login', function(req, res){
     res.render('../views/home.ejs', { page: 'login' });
 });
 
-router.post('/login', function(req, res){
+router.post('/login', async function(req, res){
     // Validate login
     const { error } = loginValidate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
+
+    //check account
+    const accCheck = await User.findOne({email: req.body.email});
+    if(!accCheck) return res.status(400).send("Email dont already exists");
+
+    //check password
+    const passCheck = await bcrypt.compare(req.body.password, accCheck.password);
+    if(!passCheck) return res.status(400).send("Invalid pass!!!");
+
+    res.render('../views/home.ejs', { page: 'chat' });
 })
 
 module.exports = router;
