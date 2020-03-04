@@ -8,12 +8,13 @@ app.use(bodyParser.urlencoded({ extended: false }), bodyParser.json());
 const port = 3000;
 
 //import routes
-var router = require('./routes/index.js');
-app.use('/', router);
-// const router = require('./routes/index.js')
+const router = require('./routes/index.js');
 const indexUser = require('./routes/index.js');
 
+app.use('/user',indexUser);
+app.use('/', router);
 
+//Mongoose
 var mongoose = require('mongoose'),
     bcrypt = require('bcrypt');
 

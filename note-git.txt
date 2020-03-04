@@ -11,7 +11,7 @@ You can initialize this repository with code from a Subversion, Mercurial, or TF
 project
 frameword used
     1. nodemon => auto start app when have change
-    2. JWT
+    2. JWT => create token to validate login
     3.bycript => gen salt password & hash password . After it save hash as password in database
     4. ejs => engine my like to building template html by format .ejs
     5. router => changed routing app.get by route.get or route.post
