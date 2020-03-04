@@ -24,6 +24,7 @@ const regisValidate = function(data){
         //     .required(),
     
         pass_repeat: Joi.ref('password'),
+        // pass_repeat: Joi.string(),
 
         phone: Joi.string()
             .min(9),
@@ -58,14 +59,7 @@ const loginValidate = function(data){
         .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
 
         //password:
-
-        // C1 : validation with https://www.npmjs.com/package/joi-password-complexity
-        // password: complpassword,
-        
-        //C2: 
-        // password: Joi.string()
-        //     .min(6)
-        //     .required(),
+        password: Joi.string(),
     });
     return schemaLogin.validate(data)
 }

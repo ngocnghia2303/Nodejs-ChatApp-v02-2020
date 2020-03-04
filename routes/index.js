@@ -58,11 +58,10 @@ router.post('/sign', async function(req,res){
     if(emailcheck) return res.status(400).send("Email already exists");
 
     //hash password
-    await bcrypt.genSalt(saltRounds, function (err, salt) {
-        if (err) return next(err);
-        // hash the password
-      bcrypt.hash(req.body.password, salt, function (err, hash) {
-            if (err) return next(err);
+    const salt = await bcrypt.genSalt(saltRounds);
+    // hash the password
+    const pasHash = await bcrypt.hash(req.body.password, salt);
+    const pasRepeatHash = await bcrypt.hash(req.body.pass_repeat, salt);
 
             // set the hashed password back on our user document
             // newuser.password = hash;
@@ -73,8 +72,9 @@ router.post('/sign', async function(req,res){
             var newuser = new User({
                 email: req.body.email,
                 name: req.body.name,
-                password: req.body.password,
-                pass_repeat: req.body.pass_repeat,
+                password: pasHash,
+                // pass_repeat: req.body.pass_repeat,
+                pass_repeat: pasRepeatHash,
                 address: req.body.address,
                 phone: req.body.phone,
                 job: req.body.work,
@@ -86,28 +86,18 @@ router.post('/sign', async function(req,res){
                 income: req.body.income,
                 alone: status
             });
-        });
-    });
-
+            try{
+                const User = await newuser.save();
+                console.log("New User registed compelete!!!");
+                res.render('../views/home.ejs', { page: 'chat' });
+            }catch(err){
+                console.log("Error =============================> "+ err)
+                res.status(400).send(err);
+            };
+});
     // passwordComplexity(complpassword).validate(req.body.password);
     // module.exports = complpassword;
-    try{
-        const User = await newuser.save(function(err, data){
-            if (err) {
-                res.json({
-                    kq: 0,
-                    ErrMess: "Loi~ ne`=====> " + err
-                });
-                console.log(err);
-            } else {
-                // console.log('New User registed thanh` cong` '+ data);
-                res.render('../views/home.ejs', { page: 'chat' });
-            };
-        });
-    }catch(err){
-        res.status(400).send(err);
-    };
-});
+
 
 router.get('/login', function(req, res){
     res.render('../views/home.ejs', { page: 'login' });

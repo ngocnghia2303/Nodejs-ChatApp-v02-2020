@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
     },
     pass_repeat:{
         type: String,
-        // required:true,
+        required:true,
     },
     address: {
         type: String,
