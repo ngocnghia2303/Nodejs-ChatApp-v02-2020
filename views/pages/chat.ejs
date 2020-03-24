@@ -1,5 +1,106 @@
-<div>
-    <p>
-        CHAT APP WINDOW ======> LINDA
-    </p>
+<style>
+  #left,
+  #right {
+    min-height: 300px
+  }
+
+  #left {
+    width: 30%;
+    float: left;
+    background-color: darkslateblue;
+  }
+
+  #right {
+    width: 70%;
+    float: right;
+    background-color: black;
+  }
+
+  #boxTitle {
+    border: blue solid 1.5px;
+    padding: 5px;
+    text-align: center;
+  }
+
+  #boxContent {
+    border: blue solid 1.5px;
+    padding: 5px;
+    text-align: center;
+  }
+
+  #sayHi {
+    text-align: right;
+  }
+
+  #listMesseages {
+    height: 200px;
+    background-color: cadetblue;
+    margin-bottom: 15px;
+  }
+
+  #txtMessage {
+    background-color: transparent;
+    border: tomato solid 1px;
+  }
+
+  #btnSendMessage,
+  #btnLogout {
+    color: tomato;
+    font-weight: bold;
+  }
+</style>
+
+<!-- <label id="xxx" for="message" class="h4" style="margin-top: 20px; color: blanchedalmond;">Message:</label>
+  <ul id="messages" style="height: 400px; border: solid 1px #cecece; list-style: none; background-color: black;"></ul>
+  <form>
+    <div class="form-group">
+      <textarea id="m" style="width: 95%; background-color: black;" class="form-control" rows="5"
+        placeholder="Enter your message" required>
+          </textarea>
+    </div>
+    <button type="submit" id="form-submit" class="btn btn-success btn-lg pull-right ">Submit</button>
+  </form> -->
+<div id="chatForm">
+  <div id="left">
+    <div id="boxTitle">
+      User Online
+    </div>
+    <div id="boxContent">
+      <div class="useronline">
+      </div>
+    </div>
+  </div>
+  <div id="right">
+    <div id="sayHi">
+      Hello User: <span id="currentUser"><%- acc %></span>
+      <input type="button" id="btnLogout" value="Logout" />
+    </div>
+    <div id="listMesseages">
+
+    </div>
+    <input type="text" id="txtMessage" />
+    <input id="btnSendMessage" value="Send" type="button" />
+
+  </div>
 </div>
+
+<script>
+  socket.on('server-send-list-user', function(data){
+    $('#boxContent').html("");
+    data.forEach(function(i){
+      $('#boxContent').append("<div class='user'>" + i + "</div>");
+    });
+  // });
+  // $(function () {
+  //   const socket = io();
+  //   $('form').submit(function(){
+  //     socket.emit('chat message', $('#m').val());
+  //     $('#m').val('');
+  //     return false;
+  //   });
+
+  //   socket.on('chat message', function(msg){
+  //     $('#messages').append($('<li style="color: #cecece;">').text(msg));
+  //   })
+  // });
+</script>

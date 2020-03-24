@@ -16,15 +16,8 @@ const regisValidate = function(data){
 
         // Linda will check pattern again
         // C1 : validation with https://www.npmjs.com/package/joi-password-complexity
-        password: Joi.string(),
-        // repeat_pass: Joi.string(),
-        //C2: 
-        // password: Joi.string()
-        //     .min(6)
-        //     .required(),
-    
+        password: Joi.string(),    
         pass_repeat: Joi.ref('password'),
-        // pass_repeat: Joi.string(),
 
         phone: Joi.string()
             .min(9),

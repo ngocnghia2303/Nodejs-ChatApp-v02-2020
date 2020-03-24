@@ -1,15 +1,14 @@
-
-  <form class="form-inline" action="http://localhost:3000/login" method="POST">
-    <div class="form-group">
-      <label for="email">Email vô mài</label>
-      <input type="email" class="form-control" id="email" placeholder="email@" name="email">
+<form id="form" class="form-inline" action="http://localhost:3000/login" method="POST">
+  <div class="form-group">
+    <label for="email">Email vô mài</label>
+    <input type="email" class="form-control" id="email" placeholder="email@" name="email">
   </div>
-    <div class="form-group">
-      <label class="textlabel" for="pwd">Password:</label>
-      <input type="password" class="form-control" id="pass1"  placeholder="*****" name="password">
-    </div>
-    <div class="checkbox">
-      <label class="textlabel"><input type="checkbox"> Remember me</label>
-    </div>
-    <button type="submit" class="btn btn-success">Login</button>
-  </form>
+  <div class="form-group">
+    <label class="textlabel" for="pwd">Password:</label>
+    <input type="password" class="form-control" id="pass1" placeholder="*****" name="password">
+  </div>
+  <div class="checkbox">
+    <label class="textlabel"><input type="checkbox"> Remember me</label>
+  </div>
+  <button id="login" type="submit" class="btn btn-success">Login</button>
+</form>

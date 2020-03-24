@@ -1,12 +1,8 @@
 const express = require('express');
 const app = express();
-const http = require('http').Server(app);
-const fs = require('fs');
-
-// const http = require('http').Server(app);
+const server = require('http').Server(app);
 
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 
 //Engine Ejs
 const ejs = require('ejs');
@@ -24,15 +20,15 @@ router.use(bodyParser.urlencoded({
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-//socket.io
-const io = require('socket.io')(http);
-
 //router
 const User = require('../models/user_model.js');
 const {
     regisValidate,
     loginValidate
 } = require('../auth/authen.js');
+
+//json web token
+const jwt = require('jsonwebtoken');
 const checkToken = require('../auth/tokenCheck.js');
 
 //home page
@@ -83,7 +79,6 @@ router.post('/sign', async function (req, res) {
         email: req.body.email,
         name: req.body.name,
         password: pasHash,
-        // pass_repeat: req.body.pass_repeat,
         pass_repeat: pasRepeatHash,
         address: req.body.address,
         phone: req.body.phone,
@@ -100,7 +95,7 @@ router.post('/sign', async function (req, res) {
         const User = await newuser.save();
         console.log("New User registed compelete!!!");
         res.render('../views/home.ejs', {
-            page: 'chat'
+            page: 'login'
         });
     } catch (err) {
         console.log("Error =============================> " + err)
@@ -109,7 +104,6 @@ router.post('/sign', async function (req, res) {
 });
 // passwordComplexity(complpassword).validate(req.body.password);
 // module.exports = complpassword;
-
 
 router.get('/login', function (req, res) {
     res.render('../views/home.ejs', {
@@ -140,24 +134,12 @@ router.post('/login', async function (req, res) {
         expiresIn: 60 * 60
     });
 
-    // if(token) return console.log("TOKEN is: " + token);
-    
     //add token >> when login compelete
 
-    // res.header("authenticate-token", token).send(token);
-    if(token) return res.render('../views/home.ejs', { page: 'chat' });
-
-    // res.sendFile(__dirname + '/index.html');
-    io.on('connection', function (socket) {
-
-        socket.on('chat message', function (msg) {
-            io.emit('chat message', msg);
-            console.log('user message ==========>' + (msg))
-        });
-    });
+    if(token) return res.render('../views/home.ejs', { page: 'chat', acc: req.body.email});
+    // if(token) return res.render('../views/home.ejs', { page: 'chat'});
 
 });
-
 
 //Demo token
 router.get('/token', checkToken, function (req, res) {

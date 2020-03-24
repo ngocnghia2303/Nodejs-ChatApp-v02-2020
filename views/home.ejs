@@ -7,10 +7,10 @@
     <title>Home Chat box</title>
     <script src="../index.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="socket.io/socket.io.js"></script>
     <style>
         .has-bg-img {
             background-image: url("https://get.wallhere.com/photo/sunset-night-galaxy-space-sky-blue-Milky-Way-horizon-atmosphere-science-universe-astronomy-Homer-Simpson-constellation-midnight-star-darkness-2560x1440-px-computer-wallpaper-atmosphere-of-earth-outer-space-astronomical-object-phenomenon-837683.jpg");
@@ -21,24 +21,26 @@
             background-position: initial;
             position: absolute;
         }
-        .textTitle{
-            font-weight: bold; 
-            font-style: oblique; 
-            font-size: 40px; 
+
+        .textTitle {
+            font-weight: bold;
+            font-style: oblique;
+            font-size: 40px;
         }
+
         .header {
-            color:antiquewhite; 
+            color: antiquewhite;
             margin: 5px;
             text-align: center;
             position: static;
         }
 
-        a{
+        a {
             font-weight: bold;
             color: antiquewhite;
         }
 
-        .form-inline.textlabel{
+        .form-inline.textlabel {
             font-weight: bold;
             color: antiquewhite;
         }
@@ -54,7 +56,7 @@
                     <p class="textTitle">
                         Welcome to ChatApp LindaHTV
                     </p>
-                            
+
                     <div class="warpper">
                         <%- include('pages/' + page) %>
                     </div>
@@ -68,6 +70,27 @@
             </div> -->
         </div>
     </div>
+    <script>
+        const socket = io.connect([
+            'http://localhost:3000/login',
+            'http://localhost:3000/sign'
+        ]);
+        $(document).ready(function () {
+            $('#login').click(function () {
+                socket.emit('client-send-email', $('#email').val());
+            });
+        });
+
+        socket.on('server-send-login-failed', function () {
+            alert("Login failed: Check your email & password !!!");
+        });
+
+        socket.on('server-send-register-succes', function (data) {
+            alert("Welcome " + data + " to chat app Linda!!");
+            // $('#currentUser').html(data);
+        });
+
+    </script>
 </body>
 
 </html>
